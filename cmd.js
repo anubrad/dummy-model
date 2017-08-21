@@ -13,11 +13,11 @@ var utils = require('crc-utils');
  * Set the log level
  * Defaults to 'error'
  */
-var logLevel = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : 'debug';
+var logLevel = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : 'info';
 logger.warn('LogLevel: ', logLevel);
 logger.level = logLevel;
 
-var loopCnt = process.env.LOOP_CNT ? process.env.LOOP_CNT : 100;
+var loopCnt = process.env.LOOP_CNT ? process.env.LOOP_CNT : 150000;
 
 logger.info('Running command: ', {
     logLevel: logLevel,
@@ -67,42 +67,6 @@ var completed = [true, false];
 var initialMemory = process.memoryUsage().heapUsed;
 var hrStart = process.hrtime();
 
-function _addTask(task, cb) {
-    logger.debug('addTask: ', {
-        task: task
-    });
-    var delay = Math.round(Math.random() * 1);
-    cb();
-    // setTimeout(function () {
-    //     cb();
-    // }, delay);
-}
-
-// var waitLoop = utils.loopWait(loopCnt, function (loop) {
-//     var i = loop.iteration();
-//     _addTask({
-//         name: 'task' + i,
-//         priority: priorities[Math.floor((Math.random() * 5))],
-//         project: projects[Math.floor((Math.random() * 4))],
-//         user: users[Math.floor((Math.random() * 4))],
-//         completed: completed[Math.floor((Math.random() * 2))]
-//     }, function () {
-
-//         logger.debug('callback: ', i);
-//         loop.next();
-//     });
-// }, function (done) {
-//     logger.info('Loop Completed: ', {
-//         done: done
-//     });
-//     var afterMemory = process.memoryUsage().heapUsed;
-//     var end = process.hrtime(hrStart);
-
-//     logger.info('used memory ' + (afterMemory - initialMemory) / 1000000);
-//     logger.info('timetake: ', end[1] / 1000000);
-//     logger.info("tasks: " + tasks.getCount());
-// });
-
 for (var i = 0; i < loopCnt; i++) {
     tasks.add({
         name: 'task' + i,
@@ -112,26 +76,6 @@ for (var i = 0; i < loopCnt; i++) {
         completed: completed[Math.floor((Math.random() * 2))]
     });
 
-    // _addTask({
-    //         name: 'task' + i,
-    //         priority: priorities[Math.floor((Math.random() * 5))],
-    //         project: projects[Math.floor((Math.random() * 4))],
-    //         user: users[Math.floor((Math.random() * 4))],
-    //         completed: completed[Math.floor((Math.random() * 2))]
-    //     }, function(){
-    //         logger.debug('callback: ', i++);
-    //     });
-    // var delay = Math.round(Math.random() * 10);
-    // logger.debug('Delay: ', delay);
-    // setTimeout(function () {
-    //     tasks.add({
-    //         name: 'task' + i,
-    //         priority: priorities[Math.floor((Math.random() * 5))],
-    //         project: projects[Math.floor((Math.random() * 4))],
-    //         user: users[Math.floor((Math.random() * 4))],
-    //         completed: completed[Math.floor((Math.random() * 2))]
-    //     });
-    // }, delay);
 };
 
 var afterMemory = process.memoryUsage().heapUsed;
